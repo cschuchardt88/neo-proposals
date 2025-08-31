@@ -33,7 +33,7 @@ then will read the <code>JSON</code> string to see if the method exists. If the 
    - Method can't start with underscores <code>_</code>. This limits malicious activity. For example if you were to require a fee for <code>_initialize</code>.
    - Methods <code>verify</code> and <code>onNEP17Payment</code> will be ignored.
 1. Amount
-   - If the amount doesn't exist. Then the small unit of GAS is used (_Datoshi_). _For example: GAS's small unit in Datoshi <code>0.00000001</code>_
+   - If the amount doesn't exist. Then the smallest unit of GAS is used (_Datoshi_). _For example: GAS's small unit in Datoshi <code>0.00000001</code>_
    - If the amount does exist. Than that unit amount will than be deducted.
    - Amount can't be negative. If is negative than this entry is ignored.
 1. Receiver Address
