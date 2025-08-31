@@ -9,18 +9,50 @@
 
 ==Abstract==
 
-One may want to charge a fee for calling one of their contract methods. Allowing non-native contracts to have <code>fixed</code> or <code>dynamic</code> pricing for methods within their contract then sendings the funds to the contract itself.
+One may want to charge a fee for calling one of their contract methods. Allowing non-native contracts to have <code>fixed</code> or <code>dynamic</code>
+pricing for methods within their contract then sendings the funds to the contract itself.
 
 ==Motivation==
 
-Now contract owners, such as a exchange may want a way to get a little gas for sending funds to external wallets. This would allow the contract to have one or several methods to have a <code>fixed</code> price, taking a bit of GAS from transactioner for calling the a method (Much like an opcode price works). For example, a LP token maybe want you to pay a gas for withdrawing funds. Reason most LP/Fund contracts do this to pay for the LP contract pool's transaction fees for adjusting prices and other things.
+Now contract owners, such as a exchange may want a way to get a little gas for sending funds to external wallets. This would allow the contract to have
+one or several methods to have a <code>fixed</code> price, taking a bit of GAS from transactioner for calling the a method (Much like an opcode price works).
+For example, a LP token maybe want you to pay a gas for withdrawing funds. Reason most LP/Fund contracts do this to pay for the LP contract pool's 
+transaction fees for adjusting prices and other things.
 
 ==Specification==
 
-==Rationale==
+Contract will have a <code>JSON</code> string in their storage at prefix <code>0xfe</code>. At this storage location the <code>JSON</code> string will
+contain all the meta data for each method name, amount and/or receiver address. 
 
-==Backwards Compatibility==
+When syscall <code>System.Contract.Call</code> calls a method within the contract it checks contract storage for <code>0xfe</code> prefix. If it exists
+then will read the <code>JSON</code> string to see if the method exists. If the method does exist than will follow the following.
 
-==Test Cases==
+1. Method
+   - Method must exist within the contract's manifest.
+   - If method doesn't exist within the manifest than entry is ignored.
+   - Method can't start with underscores <code>_</code>. This limits malicious activity. For example if you were to require a fee for <code>_initialize</code>.
+   - Methods <code>verify</code> and <code>onNEP17Payment</code> will be ignored.
+1. Amount
+   - If the amount doesn't exist. Then the small unit of GAS is used (_Datoshi_). _For example: GAS's small unit in Datoshi <code>0.00000001</code>_
+   - If the amount does exist. Than that unit amount will than be deducted from.
+   - Amount can't be negative. If is negative than this entry is ignored.
+1. Receiver Address
+   - If receiver doesn't exist. Than the contract itself must have the <code>onNEP17Payment</code> method and must support NEP17 and accept GAS.
+   - If reciever does exist. Than the reciever address will be used. The reciever address can be a NEP17 contract. However the contract must accept GAS.
+   - If an error occurs for any reason the gas is then burned and added as an VM fee as used GAS.
+   - If <code>0x0000000000000000000000000000000000000000</code> is used the amount is burnned no matter what.
+
+==JSON==
+<pre>
+[
+  {
+    "name": "MyMethod"                                        // method name
+    "amount": 1                                               // in Datoshi
+    "receive": "0x0000000000000000000000000000000000000000"   // Receiver address in ScriptHash format
+  }
+]
+</pre>
+
+==Storage==
 
 ==Implementation==
