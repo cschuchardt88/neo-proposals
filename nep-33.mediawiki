@@ -37,9 +37,9 @@ then will read the <code>JSON</code> string to see if the method exists. If the 
    - If the amount does exist. Than that unit amount will than be deducted.
    - Amount can't be negative. If is negative than this entry is ignored.
 1. Receiver Address
-   - If receiver doesn't exist. Than the contract itself must have the <code>onNEP17Payment</code> method, must support NEP17 and accept GAS.
-   - If reciever does exist. Than the reciever address will be used. The reciever address can be a NEP17 contract. However the contract must accept GAS.
-   - If an error occurs for any reason the gas is then burned and added as an VM fee as used GAS.
+   - If receiver doesn't exist. Then the contract itself must have the <code>onNEP17Payment</code> method, must support NEP17 and accept GAS.
+   - If reciever does exist. Then the reciever address will be used. The reciever address can be a NEP17 contract. However that contract must accept GAS.
+   - If an error occurs for any reason the gas is than burned.
    - If <code>0x0000000000000000000000000000000000000000</code> is used the amount is burnned no matter what.
 
 ==JSON==
