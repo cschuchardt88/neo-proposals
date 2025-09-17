@@ -27,19 +27,19 @@ contain all the meta data for each method name, amount and/or receiver address.
 When syscall <code>System.Contract.Call</code> calls a method within the contract it checks contract storage for <code>0xfe</code> prefix. If it exists
 then will read the <code>JSON</code> string to see if the method exists. If the method does exist than will follow the following.
 
-1. Method
-  * Method must exist within the contract's manifest.
-  * If method doesn't exist within the manifest than entry is ignored.
-  * Method can not start with a underscore <code>_</code>. This limits malicious activity. For example if you were to require a fee for <code>_initialize</code>.
-  * Methods <code>verify</code>, <code>onNEP11Payment</code> and <code>onNEP17Payment</code> will be ignored.
-2. Amount
-  * If the amount doesn't exist. Then the smallest unit of GAS is used (_Datoshi_). _For example: GAS's small unit in Datoshi <code>0.00000001</code>_
-  * If the amount does exist. Than that unit amount will than be deducted.
-  * Amount can not be negative. If is negative than this entry is ignored.
-3. Receiver Address
-  * If receiver doesn't exist. Then the contract itself **SHOULD** have the <code>onNEP17Payment</code> method and **SHOULD** support NEP17 and accept GAS.
-  * If reciever does exist. Then the reciever address will be used. The reciever address can be a NEP17 contract. However that contract **SHOULD** accept GAS.
-  * If <code>0x0000000000000000000000000000000000000000</code> is used the amount is burnned no matter what.
+* Method
+** Method must exist within the contract's manifest.
+** If method doesn't exist within the manifest than entry is ignored.
+** Method can not start with a underscore <code>_</code>. This limits malicious activity. For example if you were to require a fee for <code>_initialize</code>.
+** Methods <code>verify</code>, <code>onNEP11Payment</code> and <code>onNEP17Payment</code> will be ignored.
+* Amount
+** If the amount doesn't exist. Then the smallest unit of GAS is used (_Datoshi_). _For example: GAS's small unit in Datoshi <code>0.00000001</code>_
+** If the amount does exist. Than that unit amount will than be deducted.
+** Amount can not be negative. If is negative than this entry is ignored.
+* Receiver Address
+** If receiver doesn't exist. Then the contract itself **SHOULD** have the <code>onNEP17Payment</code> method and **SHOULD** support NEP17 and accept GAS.
+** If reciever does exist. Then the reciever address will be used. The reciever address can be a NEP17 contract. However that contract **SHOULD** accept GAS.
+** If <code>0x0000000000000000000000000000000000000000</code> is used the amount is burnned no matter what.
 
 ===JSON Storage===
 
